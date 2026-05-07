@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npx nx build twenty-shared && npx nx build twenty-front",
+  "outputDirectory": "packages/twenty-front/build",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
