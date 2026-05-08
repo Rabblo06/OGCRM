@@ -1,4 +1,5 @@
 {
+  "framework": null,
   "buildCommand": "npx nx build twenty-shared --parallel=1 && npx nx build twenty-front --parallel=1",
   "outputDirectory": "packages/twenty-front/build",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
