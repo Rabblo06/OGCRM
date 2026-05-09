@@ -61,27 +61,7 @@ export const FooterNote = () => {
     useWorkspaceBypass();
 
   if (!isOnAWorkspace) {
-    return (
-      <StyledCopyContainer>
-        <Trans>By using Twenty, you agree to the</Trans>{' '}
-        <a
-          href="https://twenty.com/legal/terms"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Trans>Terms of Service</Trans>
-        </a>{' '}
-        <Trans>and</Trans>{' '}
-        <a
-          href="https://twenty.com/legal/privacy"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Trans>Privacy Policy</Trans>
-        </a>
-        .
-      </StyledCopyContainer>
-    );
+    return null;
   }
 
   return (
@@ -94,21 +74,6 @@ export const FooterNote = () => {
           <StyledSeparator>•</StyledSeparator>
         </>
       )}
-      <a
-        href="https://twenty.com/legal/privacy"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Trans>Privacy Policy</Trans>
-      </a>
-      <StyledSeparator>•</StyledSeparator>
-      <a
-        href="https://twenty.com/legal/terms"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Trans>Terms of Service</Trans>
-      </a>
     </StyledLinksContainer>
   );
 };

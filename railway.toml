@@ -1,6 +1,6 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "yarn install && npx nx build twenty-shared && npx nx build twenty-server"
+buildCommand = "yarn install && npx nx build twenty-shared && npx nx build twenty-front && npx nx build twenty-server"
 
 [deploy]
 startCommand = "node packages/twenty-server/dist/database/scripts/setup-db.js && echo 'DB setup done' && node packages/twenty-server/dist/command/command run-instance-commands && echo 'Migrations done' && node packages/twenty-server/dist/main"
