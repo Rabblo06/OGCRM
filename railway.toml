@@ -1,6 +1,6 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "yarn install && npx nx build twenty-shared && npx nx build twenty-front && npx nx build twenty-server"
+buildCommand = "yarn install && npx nx build twenty-shared && npx nx build twenty-front && npx nx build twenty-server && cp -r packages/twenty-front/build packages/twenty-server/dist/front"
 
 [deploy]
 preDeployCommand = "node packages/twenty-server/dist/database/scripts/setup-db.js && (node packages/twenty-server/dist/command/command run-instance-commands || echo 'Warning: instance commands completed with errors, continuing...')"
