@@ -923,9 +923,6 @@ export class AuthService {
       isTargetAnExistingWorkspace &&
       !isAnExistingUser
     ) {
-      if (!this.twentyConfigService.get('IS_MULTIWORKSPACE_ENABLED')) {
-        return;
-      }
       throw new AuthException(
         'User does not have access to this workspace',
         AuthExceptionCode.FORBIDDEN_EXCEPTION,
