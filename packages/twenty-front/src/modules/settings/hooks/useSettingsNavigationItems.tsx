@@ -29,7 +29,6 @@ import {
   IconLock,
   IconMail,
   IconMessage,
-  IconPlug,
   IconRocket,
   IconServer,
   IconSettings,
@@ -166,13 +165,6 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
         //   Icon: IconApps,
         //   isHidden: !permissionMap[PermissionFlagType.API_KEYS_AND_WEBHOOKS],
         // },
-        {
-          label: t`Apps`,
-          path: SettingsPath.Applications,
-          Icon: IconPlug,
-          isHidden: !permissionMap[PermissionFlagType.APPLICATIONS],
-          modifier: 'new',
-        },
         {
           label: t`AI`,
           path: SettingsPath.AI,
