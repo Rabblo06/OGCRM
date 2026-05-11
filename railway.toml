@@ -4,7 +4,7 @@ buildCommand = "yarn install && npx nx build twenty-shared && npx nx build twent
 
 [deploy]
 preDeployCommand = "node packages/twenty-server/dist/database/scripts/setup-db.js && (cd packages/twenty-server && node dist/command/command run-instance-commands --force --include-slow || echo 'Warning: instance commands completed with errors, continuing...')"
-startCommand = "cd packages/twenty-server && node dist/main"
+startCommand = "cd packages/twenty-server && node dist/main & node dist/worker"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
 
