@@ -1,3 +1,4 @@
+import { contextStoreCurrentViewIdComponentState } from '@/context-store/states/contextStoreCurrentViewIdComponentState';
 import { useApolloCoreClient } from '@/object-metadata/hooks/useApolloCoreClient';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { useGenerateDepthRecordGqlFieldsFromObject } from '@/object-record/graphql/record-gql-fields/hooks/useGenerateDepthRecordGqlFieldsFromObject';
@@ -12,6 +13,11 @@ import { spreadsheetImportCreatedRecordsProgressState } from '@/spreadsheet-impo
 import { type SpreadsheetImportDialogOptions } from '@/spreadsheet-import/types';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { useSetAtomState } from '@/ui/utilities/state/jotai/hooks/useSetAtomState';
+import { useAtomComponentStateCallbackState } from '@/ui/utilities/state/jotai/hooks/useAtomComponentStateCallbackState';
+import { useGetViewFromState } from '@/views/hooks/useGetViewFromState';
+import { useSaveCurrentViewFields } from '@/views/hooks/useSaveCurrentViewFields';
+import { useStore } from 'jotai';
+import { type ViewField } from '@/views/types/ViewField';
 
 export const useOpenObjectRecordsSpreadsheetImportDialog = (
   objectNameSingular: string,
@@ -44,6 +50,13 @@ export const useOpenObjectRecordsSpreadsheetImportDialog = (
     setBatchedRecordsCount: setSpreadsheetImportCreatedRecordsProgress,
     abortController,
   });
+
+  const { saveViewFields } = useSaveCurrentViewFields();
+  const { getViewFromState } = useGetViewFromState();
+  const store = useStore();
+  const currentViewIdCallbackState = useAtomComponentStateCallbackState(
+    contextStoreCurrentViewIdComponentState,
+  );
 
   const openObjectRecordsSpreadsheetImportDialog = (
     options?: Omit<
@@ -84,6 +97,33 @@ export const useOpenObjectRecordsSpreadsheetImportDialog = (
               cache.evict({ fieldName: objectMetadataItem.namePlural });
             },
           });
+
+          const usedFieldNames = new Set(
+            createInputs.flatMap((input) => Object.keys(input)),
+          );
+          const usedFieldMetadataIds = new Set(
+            availableFieldMetadataItemsToImport
+              .filter((field) => usedFieldNames.has(field.name))
+              .map((field) => field.id),
+          );
+          if (usedFieldMetadataIds.size > 0) {
+            const currentViewId = store.get(currentViewIdCallbackState);
+            if (currentViewId) {
+              const currentView = getViewFromState(currentViewId);
+              if (currentView) {
+                const viewFieldsToShow = currentView.viewFields
+                  .filter(
+                    (viewField: ViewField) =>
+                      usedFieldMetadataIds.has(viewField.fieldMetadataId) &&
+                      !viewField.isVisible,
+                  )
+                  .map((viewField: ViewField) => ({ ...viewField, isVisible: true }));
+                if (viewFieldsToShow.length > 0) {
+                  await saveViewFields(viewFieldsToShow);
+                }
+              }
+            }
+          }
         } catch (error: any) {
           enqueueErrorSnackBar({
             apolloError: error,
