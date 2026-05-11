@@ -156,7 +156,9 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           label: t`APIs & Webhooks`,
           path: SettingsPath.ApiWebhooks,
           Icon: IconApi,
-          isHidden: !permissionMap[PermissionFlagType.API_KEYS_AND_WEBHOOKS],
+          isHidden:
+            !permissionMap[PermissionFlagType.API_KEYS_AND_WEBHOOKS] ||
+            !permissionMap[PermissionFlagType.WORKSPACE],
         },
         // TODO: Re-enable when integrations page is ready
         // {
@@ -169,7 +171,7 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           label: t`AI`,
           path: SettingsPath.AI,
           Icon: IconSparkles,
-          isHidden: !permissionMap[PermissionFlagType.WORKSPACE],
+          isHidden: !permissionMap[PermissionFlagType.AI_SETTINGS],
           modifier: 'new',
         },
         {
