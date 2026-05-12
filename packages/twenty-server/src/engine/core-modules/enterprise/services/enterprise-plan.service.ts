@@ -147,7 +147,7 @@ export class EnterprisePlanService implements OnModuleInit {
   }
 
   isValid(): boolean {
-    return this.hasValidEnterpriseValidityToken();
+    return this.hasValidEnterpriseValidityToken() || this.hasValidEnterpriseKey();
   }
 
   private checkLegacyKey(): boolean {
