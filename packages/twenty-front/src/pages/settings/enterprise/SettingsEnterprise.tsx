@@ -638,20 +638,21 @@ export const SettingsEnterprise = ({
         <Section>
           <H2Title
             title={t`Enterprise License`}
-            description={(() => {
-              const statusLabel = stripeStatus ?? 'unknown';
-
-              return t`Your subscription status is: ${statusLabel}`;
-            })()}
+            description={t`Your enterprise features are active on this self-hosted instance.`}
           />
-          <Button
-            Icon={IconCreditCard}
-            title={t`Go to billing portal`}
-            variant="secondary"
-            onClick={openBillingPortal}
-          />
+          <SubscriptionInfoContainer>
+            <SubscriptionInfoRowContainer
+              label={t`Status`}
+              Icon={IconCheck}
+              currentValue={
+                <StyledStatusContainer>
+                  <StyledStatusDot isActive={true} />
+                  <Trans>Active (Self-hosted)</Trans>
+                </StyledStatusContainer>
+              }
+            />
+          </SubscriptionInfoContainer>
         </Section>
-        {activateKeySection}
       </>
     );
   };
