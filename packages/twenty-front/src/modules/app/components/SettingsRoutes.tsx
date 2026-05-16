@@ -314,6 +314,14 @@ const SettingsBilling = lazy(() =>
   })),
 );
 
+const SettingsEmailTemplates = lazy(() =>
+  import('~/pages/settings/email-templates/SettingsEmailTemplates').then(
+    (module) => ({
+      default: module.SettingsEmailTemplates,
+    }),
+  ),
+);
+
 const SettingsUsage = lazy(() =>
   import('~/pages/settings/SettingsUsage').then((module) => ({
     default: module.SettingsUsage,
@@ -602,6 +610,10 @@ export const SettingsRoutes = ({ isAdminPageEnabled }: SettingsRoutesProps) => (
         <Route
           path={SettingsPath.EditImapSmtpCaldavConnection}
           element={<SettingsEditImapSmtpCaldavConnection />}
+        />
+        <Route
+          path={SettingsPath.EmailTemplates}
+          element={<SettingsEmailTemplates />}
         />
       </Route>
       <Route

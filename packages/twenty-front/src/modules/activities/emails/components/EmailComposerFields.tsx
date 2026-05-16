@@ -1,7 +1,10 @@
+import { useState } from 'react';
+
 import { useQuery } from '@apollo/client/react';
 import { styled } from '@linaria/react';
 
 import { EmailAttachmentsField } from '@/activities/emails/components/EmailAttachmentsField';
+import { useEmailTemplates } from '@/activities/emails/hooks/useEmailTemplates';
 import { type EmailComposerState } from '@/activities/emails/types/EmailComposerState';
 import { FormAdvancedTextFieldInput } from '@/object-record/record-field/ui/form-types/components/FormAdvancedTextFieldInput';
 import { FormMultiTextFieldInput } from '@/object-record/record-field/ui/form-types/components/FormMultiTextFieldInput';
@@ -9,7 +12,8 @@ import { FormTextFieldInput } from '@/object-record/record-field/ui/form-types/c
 import { GET_MY_CONNECTED_ACCOUNTS } from '@/settings/accounts/graphql/queries/getMyConnectedAccounts';
 import { Select } from '@/ui/input/components/Select';
 import { t } from '@lingui/core/macro';
-import { type SelectOption } from 'twenty-ui/input';
+import { IconLayoutGrid } from 'twenty-ui/display';
+import { Button, type SelectOption } from 'twenty-ui/input';
 import { themeCssVariables } from 'twenty-ui/theme-constants';
 
 const StyledFieldsContainer = styled.div`
@@ -39,6 +43,60 @@ const StyledCcBccToggle = styled.button`
   }
 `;
 
+const StyledTemplateDropdownWrapper = styled.div`
+  position: relative;
+`;
+
+const StyledTemplateDropdown = styled.div`
+  background: ${themeCssVariables.background.primary};
+  border: 1px solid ${themeCssVariables.border.color.medium};
+  border-radius: ${themeCssVariables.border.radius.md};
+  box-shadow: ${themeCssVariables.boxShadow.medium};
+  left: 0;
+  margin-top: ${themeCssVariables.spacing[1]};
+  max-height: 220px;
+  overflow-y: auto;
+  position: absolute;
+  top: 100%;
+  width: 260px;
+  z-index: 100;
+`;
+
+const StyledTemplateItem = styled.button`
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: ${themeCssVariables.spacing[2]} ${themeCssVariables.spacing[3]};
+  width: 100%;
+
+  &:hover {
+    background: ${themeCssVariables.background.tertiary};
+  }
+`;
+
+const StyledTemplateItemName = styled.span`
+  color: ${themeCssVariables.font.color.primary};
+  font-size: ${themeCssVariables.font.size.sm};
+  font-weight: 500;
+`;
+
+const StyledTemplateItemSubject = styled.span`
+  color: ${themeCssVariables.font.color.tertiary};
+  font-size: ${themeCssVariables.font.size.xs};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const StyledTemplateEmpty = styled.div`
+  color: ${themeCssVariables.font.color.tertiary};
+  font-size: ${themeCssVariables.font.size.sm};
+  padding: ${themeCssVariables.spacing[3]};
+  text-align: center;
+`;
+
 type EmailComposerFieldsProps = {
   composerState: EmailComposerState;
 };
@@ -50,6 +108,9 @@ export const EmailComposerFields = ({
     myConnectedAccounts: { id: string; handle: string }[];
   }>(GET_MY_CONNECTED_ACCOUNTS);
 
+  const { templates } = useEmailTemplates();
+  const [showTemplates, setShowTemplates] = useState(false);
+
   const accountOptions: SelectOption<string>[] =
     accountsData?.myConnectedAccounts?.map((account) => ({
       label: account.handle,
@@ -57,6 +118,14 @@ export const EmailComposerFields = ({
     })) ?? [];
 
   const hasMultipleAccounts = accountOptions.length > 1;
+
+  const handleSelectTemplate = (templateId: string) => {
+    const template = templates.find((t) => t.id === templateId);
+    if (!template) return;
+    composerState.setSubject(template.subject);
+    composerState.setBody(template.body);
+    setShowTemplates(false);
+  };
 
   return (
     <StyledFieldsContainer>
@@ -105,6 +174,37 @@ export const EmailComposerFields = ({
         onChange={composerState.setSubject}
         placeholder={t`Subject`}
       />
+      <StyledTemplateDropdownWrapper>
+        <Button
+          Icon={IconLayoutGrid}
+          title={t`Use Template`}
+          size="small"
+          variant="secondary"
+          onClick={() => setShowTemplates((v) => !v)}
+        />
+        {showTemplates && (
+          <StyledTemplateDropdown>
+            {templates.length === 0 ? (
+              <StyledTemplateEmpty>{t`No templates saved yet`}</StyledTemplateEmpty>
+            ) : (
+              templates.map((template) => (
+                <StyledTemplateItem
+                  key={template.id}
+                  type="button"
+                  onClick={() => handleSelectTemplate(template.id)}
+                >
+                  <StyledTemplateItemName>{template.name}</StyledTemplateItemName>
+                  {template.subject && (
+                    <StyledTemplateItemSubject>
+                      {template.subject}
+                    </StyledTemplateItemSubject>
+                  )}
+                </StyledTemplateItem>
+              ))
+            )}
+          </StyledTemplateDropdown>
+        )}
+      </StyledTemplateDropdownWrapper>
       <FormAdvancedTextFieldInput
         defaultValue=""
         onChange={composerState.setBody}
