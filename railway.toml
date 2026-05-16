@@ -1,6 +1,6 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "yarn install && npx nx build twenty-shared && npx nx build twenty-front && npx nx build twenty-server && cp -r packages/twenty-front/build packages/twenty-server/dist/front"
+buildCommand = "yarn install && npx nx build twenty-shared && npx nx run twenty-front:lingui:extract && npx nx run twenty-front:lingui:compile && npx nx build twenty-front && npx nx build twenty-server && cp -r packages/twenty-front/build packages/twenty-server/dist/front"
 
 [deploy]
 preDeployCommand = "node packages/twenty-server/dist/database/scripts/setup-db.js && (cd packages/twenty-server && node dist/command/command run-instance-commands --force --include-slow || echo 'Warning: instance commands completed with errors, continuing...') && (cd packages/twenty-server && node dist/command/command upgrade || echo 'Warning: workspace upgrade completed with errors, continuing...') && (cd packages/twenty-server && node dist/command/command upgrade:1-21:add-email-templates-command-menu-item || echo 'Warning: email templates command menu item seeding completed with errors, continuing...')"
