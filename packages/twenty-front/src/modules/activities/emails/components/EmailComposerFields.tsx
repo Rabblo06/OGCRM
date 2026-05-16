@@ -51,7 +51,7 @@ const StyledTemplateDropdown = styled.div`
   background: ${themeCssVariables.background.primary};
   border: 1px solid ${themeCssVariables.border.color.medium};
   border-radius: ${themeCssVariables.border.radius.md};
-  box-shadow: ${themeCssVariables.boxShadow.medium};
+  box-shadow: ${themeCssVariables.boxShadow.light};
   left: 0;
   margin-top: ${themeCssVariables.spacing[1]};
   max-height: 220px;
