@@ -3,7 +3,7 @@ builder = "NIXPACKS"
 buildCommand = "yarn install && npx nx build twenty-shared && npx nx build twenty-front && npx nx build twenty-server && cp -r packages/twenty-front/build packages/twenty-server/dist/front"
 
 [deploy]
-preDeployCommand = "node packages/twenty-server/dist/database/scripts/setup-db.js && (cd packages/twenty-server && node dist/command/command run-instance-commands --force --include-slow || echo 'Warning: instance commands completed with errors, continuing...')"
+preDeployCommand = "node packages/twenty-server/dist/database/scripts/setup-db.js && (cd packages/twenty-server && node dist/command/command run-instance-commands --force --include-slow || echo 'Warning: instance commands completed with errors, continuing...') && (cd packages/twenty-server && node dist/command/command upgrade || echo 'Warning: workspace upgrade completed with errors, continuing...')"
 startCommand = "cd packages/twenty-server && if [ \"$RAILWAY_RUN_AS_WORKER\" = \"true\" ]; then node dist/queue-worker/queue-worker; else node dist/main; fi"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
