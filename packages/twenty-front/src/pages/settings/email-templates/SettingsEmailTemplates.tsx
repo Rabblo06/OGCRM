@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { SettingsPageContainer } from '@/settings/components/SettingsPageContainer';
 import { SubMenuTopBarContainer } from '@/ui/layout/page/components/SubMenuTopBarContainer';
+import { TextArea } from '@/ui/input/components/TextArea';
+import { TextInput } from '@/ui/input/components/TextInput';
 import {
   type EmailTemplate,
   useEmailTemplates,
@@ -11,7 +13,7 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import { SettingsPath } from 'twenty-shared/types';
 import { getSettingsPath } from 'twenty-shared/utils';
 import { H2Title, IconEdit, IconMail, IconPlus, IconTrash } from 'twenty-ui/display';
-import { Button, TextArea, TextInput } from 'twenty-ui/input';
+import { Button } from 'twenty-ui/input';
 import { Section } from 'twenty-ui/layout';
 import { themeCssVariables } from 'twenty-ui/theme-constants';
 
@@ -157,21 +159,22 @@ export const SettingsEmailTemplates = () => {
               label={t`Template name`}
               placeholder={t`e.g. Follow-up, Introduction`}
               value={form.name}
-              onChange={(value) => setForm((f) => ({ ...f, name: value }))}
+              onChange={(value: string) => setForm((f: FormState) => ({ ...f, name: value }))}
               fullWidth
             />
             <TextInput
               label={t`Subject`}
               placeholder={t`Email subject line`}
               value={form.subject}
-              onChange={(value) => setForm((f) => ({ ...f, subject: value }))}
+              onChange={(value: string) => setForm((f: FormState) => ({ ...f, subject: value }))}
               fullWidth
             />
             <TextArea
+              textAreaId="email-template-body"
               label={t`Body`}
               placeholder={t`Email body text`}
               value={form.body}
-              onChange={(value) => setForm((f) => ({ ...f, body: value }))}
+              onChange={(value: string) => setForm((f: FormState) => ({ ...f, body: value }))}
               minRows={5}
             />
             <StyledFormActions>
