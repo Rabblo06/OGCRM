@@ -110,6 +110,11 @@ export const EmailComposerFields = ({
 
   const { templates } = useEmailTemplates();
   const [showTemplates, setShowTemplates] = useState(false);
+  const [templateFill, setTemplateFill] = useState<{
+    key: string;
+    subject: string;
+    body: string;
+  } | null>(null);
 
   const accountOptions: SelectOption<string>[] =
     accountsData?.myConnectedAccounts?.map((account) => ({
@@ -124,6 +129,7 @@ export const EmailComposerFields = ({
     if (!template) return;
     composerState.setSubject(template.subject);
     composerState.setBody(template.body);
+    setTemplateFill({ key: templateId, subject: template.subject, body: template.body });
     setShowTemplates(false);
   };
 
@@ -169,8 +175,9 @@ export const EmailComposerFields = ({
         </>
       )}
       <FormTextFieldInput
+        key={templateFill ? `subject-${templateFill.key}` : 'subject-default'}
         label={t`Subject`}
-        defaultValue={composerState.defaultSubject}
+        defaultValue={templateFill ? templateFill.subject : composerState.defaultSubject}
         onChange={composerState.setSubject}
         placeholder={t`Subject`}
       />
@@ -206,7 +213,8 @@ export const EmailComposerFields = ({
         )}
       </StyledTemplateDropdownWrapper>
       <FormAdvancedTextFieldInput
-        defaultValue=""
+        key={templateFill ? `body-${templateFill.key}` : 'body-default'}
+        defaultValue={templateFill ? templateFill.body : ''}
         onChange={composerState.setBody}
         placeholder={t`Type something or press "/" to see commands`}
         minHeight={120}
