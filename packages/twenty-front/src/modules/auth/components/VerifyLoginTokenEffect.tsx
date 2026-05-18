@@ -12,8 +12,6 @@ import { AppPath } from 'twenty-shared/types';
 import { isDefined } from 'twenty-shared/utils';
 import { useNavigateApp } from '~/hooks/useNavigateApp';
 
-const VERIFY_TIMEOUT_MS = 15_000;
-
 export const VerifyLoginTokenEffect = () => {
   const [searchParams] = useSearchParams();
   const loginToken = searchParams.get('loginToken');
@@ -40,16 +38,6 @@ export const VerifyLoginTokenEffect = () => {
     // Verify only needs to run once at mount
     // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [clientConfigLoaded]);
-
-  // Safety fallback: if verification hangs, redirect to sign-in after timeout
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate(AppPath.SignInUp);
-    }, VERIFY_TIMEOUT_MS);
-
-    return () => clearTimeout(timer);
-    // oxlint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <>
