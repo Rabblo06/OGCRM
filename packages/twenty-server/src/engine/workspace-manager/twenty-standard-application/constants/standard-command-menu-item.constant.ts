@@ -735,7 +735,7 @@ export const STANDARD_COMMAND_MENU_ITEMS = {
     payload: { path: '/settings/accounts' },
   },
   goToEmailTemplates: {
-    universalIdentifier: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+    universalIdentifier: 'f7a8b9c0-d1e2-4f3a-8b5c-6d7e8f9a0b1c',
     label: 'Email Templates',
     icon: 'IconLayoutGrid',
     isPinned: false,
