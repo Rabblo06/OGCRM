@@ -167,6 +167,30 @@ export const buildRecordFromImportedStructuredRow = ({
     )
     .catch([]);
 
+  const parseAdditionalPhones = (
+    value: string,
+  ): Array<{ number: string; callingCode: string; countryCode: string }> => {
+    const jsonResult = phoneArrayJSONSchema.parse(value);
+    if (jsonResult.length > 0) {
+      return jsonResult;
+    }
+    if (!isNonEmptyString(value)) {
+      return [];
+    }
+    try {
+      const parsed = parsePhoneNumberWithError(value);
+      return [
+        {
+          number: parsed.nationalNumber as string,
+          callingCode: `+${parsed.countryCallingCode}`,
+          countryCode: parsed.country ?? '',
+        },
+      ];
+    } catch {
+      return [];
+    }
+  };
+
   const recordToBuild: Record<string, any> = {};
 
   const COMPOSITE_FIELD_TRANSFORM_CONFIGS = {
@@ -193,7 +217,7 @@ export const buildRecordFromImportedStructuredRow = ({
       primaryPhoneCountryCode: castToString,
       primaryPhoneNumber: castToString,
       primaryPhoneCallingCode: castToString,
-      additionalPhones: phoneArrayJSONSchema.parse,
+      additionalPhones: parseAdditionalPhones,
     },
 
     [FieldMetadataType.RICH_TEXT]: {

@@ -209,10 +209,11 @@ export const getSpreadSheetFieldValidationDefinitions = (
                       isValidCountryCode(phone.countryCode),
                   );
                 } catch {
-                  return false;
+                  // Not JSON — accept a plain international phone number
+                  return isValidPhoneNumber(stringifiedAdditionalPhones);
                 }
               },
-              errorMessage: `${fieldName} ${t`must be an array of object with valid phone, calling code and country code (format: '[{"number":"123456789", "callingCode":"+33", "countryCode":"FR"}]')`}`,
+              errorMessage: `${fieldName} ${t`is not a valid phone number`}`,
               level: 'error',
             },
           ];
