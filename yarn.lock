@@ -19147,8 +19147,8 @@ __metadata:
   linkType: hard
 
 "@storybook/addon-coverage@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@storybook/addon-coverage@npm:3.0.0"
+  version: 3.0.1
+  resolution: "@storybook/addon-coverage@npm:3.0.1"
   dependencies:
     "@istanbuljs/load-nyc-config": "npm:^1.1.0"
     "@jsdevtools/coverage-istanbul-loader": "npm:^3.0.5"
@@ -19158,7 +19158,7 @@ __metadata:
     istanbul-lib-instrument: "npm:^6.0.1"
     test-exclude: "npm:^6.0.0"
     vite-plugin-istanbul: "npm:^6.0.2"
-  checksum: 10c0/f688310b41f35a914e82bf5b75b7f6e113c0414503b887497c8ce48efe8e00daeee1b5ea5fd42595a38a051e9860fc82338a94fdca0ecd3b492f162f20dae2a5
+  checksum: 10c0/f0a00de2eeac6df49c4a4f8601ff35453de3d9b07f319f3585073a87e033e7018bf741f2c5e8648ad55a73c06f8391e9f541f6b5c29dda40aca0080a07a8273b
   languageName: node
   linkType: hard
 
